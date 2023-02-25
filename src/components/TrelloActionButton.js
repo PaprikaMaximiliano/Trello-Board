@@ -3,6 +3,8 @@ import Icon from '@mui/material/Icon';
 import Card from '@mui/material/Card';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
+import { connect } from 'react-redux';
+import { addList, addCard } from '../actions';
 // import TextareaAutosize from 'react-textarea-autosize';
 class TrelloActionButton extends Component {
     state = {
@@ -26,6 +28,28 @@ class TrelloActionButton extends Component {
         this.setState({
             text: e.target.value,
         });
+    };
+
+    handleAddList = () => {
+        const { dispatch } = this.props;
+        const { text } = this.state;
+        if (text) {
+            this.setState({
+                text: '',
+            });
+            dispatch(addList(text));
+        }
+    };
+
+    handleAddCard = () => {
+        const { dispatch, listID } = this.props;
+        const { text } = this.state;
+        if (text) {
+            this.setState({
+                text: '',
+            });
+            dispatch(addCard(listID, text));
+        }
     };
 
     renderAddButton = () => {
@@ -52,7 +76,7 @@ class TrelloActionButton extends Component {
     };
 
     renderForm = () => {
-        const {list} = this.props;
+        const { list } = this.props;
         const placeholder = list
             ? 'Enter list title...'
             : 'Enter a title for this card...';
@@ -85,12 +109,17 @@ class TrelloActionButton extends Component {
                 </Card>
                 <div style={styles.formButtonGroup}>
                     <Button
+                        onMouseDown={
+                            list ? this.handleAddList : this.handleAddCard
+                        }
                         variant="contained"
                         style={{ color: 'white', background: '#5aac44' }}
                     >
                         {buttonTitle}
                     </Button>
-                    <Icon style={{ marginLeft: 8, cursor: 'pointer' }}>close</Icon>
+                    <Icon style={{ marginLeft: 8, cursor: 'pointer' }}>
+                        close
+                    </Icon>
                 </div>
             </div>
         );
@@ -110,11 +139,11 @@ const styles = {
         width: 272,
         paddingLeft: 10,
     },
-    formButtonGroup:{
+    formButtonGroup: {
         marginTop: 8,
         display: 'flex',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
 };
 
-export default TrelloActionButton;
+export default connect()(TrelloActionButton);
