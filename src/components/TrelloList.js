@@ -15,30 +15,26 @@ const ListContainer = styled.div`
 `;
 const TrelloList = ({ title, cards, listID }) => {
     return (
-        <Droppable droppableId={String(listID)}>
-            {(provided) => (
-                <ListContainer
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                >
-                    <h4>{title}</h4>
-                    {cards.map((card, index) => (
-                        <TrelloCard
-                            key={card.id}
-                            index={index}
-                            text={card.text}
-                            id={card.id}
-                        />
-                    ))}
-                    {provided.placeholder}
-
-                    <TrelloActionButton listID={listID} />
-                </ListContainer>
-            )}
-        </Droppable>
-
+        <ListContainer>
+            <h4>{title}</h4>
+            <Droppable droppableId={String(listID)}>
+                {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                        {cards.map((card, index) => (
+                            <TrelloCard
+                                key={card.id}
+                                index={index}
+                                text={card.text}
+                                id={card.id}
+                            />
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+            <TrelloActionButton listID={listID} />
+        </ListContainer>
     );
 };
-
 
 export default TrelloList;
