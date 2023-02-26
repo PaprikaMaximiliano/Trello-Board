@@ -1,7 +1,7 @@
 import { CONSTANTS } from '../actions';
 
 let listID = 2;
-let cardID = 4;
+let cardID = 5;
 
 const initialState = [
     {
@@ -72,7 +72,6 @@ const listsReducer = (state = initialState, action) => {
                 droppableIndexStart,
                 droppableIndexEnd,
             } = action.payload;
-            const newState = [...state];
 
             //in the same list
             if (droppableIdStart === droppableIdEnd) {
@@ -81,7 +80,23 @@ const listsReducer = (state = initialState, action) => {
                 list.cards.splice(droppableIndexEnd, 0, ...card);
             }
 
-            return newState;
+            //in the other list
+            if(droppableIdStart !== droppableIdEnd){
+                //finding the list where drag happened
+                const listStart = state.find(list => droppableIdStart === list.id);
+
+
+                //pull out card from this list
+                const card = listStart.cards.splice(droppableIndexStart,1);
+
+                //finding the list where drag ended
+                const listEnd = state.find(list => droppableIdEnd === list.id);
+
+                //put the card in the new list
+                listEnd.cards.splice(droppableIndexEnd, 0, ...card);
+
+            }
+            break;
         default:
             return state;
     }
