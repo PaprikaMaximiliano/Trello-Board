@@ -1,6 +1,7 @@
 {
   "name": "trello-board-frontend",
   "version": "0.1.0",
+  "homepage": "https://PaprikaMaximiliano.github.io/Trello-Board",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -10,12 +11,15 @@
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^17.0.1",
+
     "react-redux": "^8.0.5",
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "styled-components": "^5.3.6"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -40,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "prettier": "^2.8.4"
   }
 }
