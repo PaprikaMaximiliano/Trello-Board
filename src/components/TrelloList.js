@@ -1,9 +1,10 @@
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
-
-import TrelloActionButton from './TrelloActionButton';
-import TrelloCard from './TrelloCard';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+
+import TrelloCard from './TrelloCard';
+import TrelloAddButton from './TrelloAddButton';
+import TrelloDeleteButton from './TrelloDeleteButton';
 
 const ListContainer = styled.div`
     background-color: #ccc;
@@ -12,28 +13,57 @@ const ListContainer = styled.div`
     padding: 8px;
     height: 100%;
     margin-right: 8px;
+    position: relative;
 `;
-const TrelloList = ({ title, cards, listID }) => {
+
+const DeleteButtonContainer = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+`;
+const TrelloList = ({ title, cards, listID, listIndex }) => {
+
+    const isListEmpty = () => {
+        return cards.length === 0;
+    }
+
     return (
-        <ListContainer>
-            <h4>{title}</h4>
-            <Droppable droppableId={String(listID)}>
-                {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {cards.map((card, index) => (
-                            <TrelloCard
-                                key={card.id}
-                                index={index}
-                                text={card.text}
-                                id={card.id}
-                            />
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-            <TrelloActionButton listID={listID} />
-        </ListContainer>
+        <Draggable draggableId={String(listID)} index={listIndex}>
+            {(provided) => (
+                <ListContainer
+                    {...provided.draggableProps}
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}
+                >
+                    <h4>{title}</h4>
+                    <DeleteButtonContainer>
+                        <TrelloDeleteButton list isShownForList={isListEmpty()} listIndex={listIndex}/>
+                    </DeleteButtonContainer>
+
+                    <Droppable droppableId={String(listID)}>
+                        {(provided) => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                {cards.map((card, index) => (
+                                    <TrelloCard
+                                        key={card.id}
+                                        index={index}
+                                        listIndex={listIndex}
+                                        text={card.text}
+                                        id={card.id}
+                                        listID={listID}
+                                    />
+                                ))}
+                                {provided.placeholder}
+                                <TrelloAddButton listID={listID} />
+                            </div>
+                        )}
+                    </Droppable>
+                </ListContainer>
+            )}
+        </Draggable>
     );
 };
 

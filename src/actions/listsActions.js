@@ -6,12 +6,20 @@ export const addList = (title) => {
     };
 };
 
-export const sort = (
+export const deleteList = ( listIndexToDelete) => {
+    return {
+        type: CONSTANTS.DELETE_LIST,
+        payload: { listIndexToDelete },
+    };
+};
+
+export const dragNDrop = (
     droppableIdStart,
     droppableIdEnd,
     droppableIndexStart,
     droppableIndexEnd,
-    droppableId
+    droppableId,
+    type
 ) => {
     return {
         type: CONSTANTS.DRAG_HAPPENED,
@@ -20,7 +28,8 @@ export const sort = (
             droppableIdEnd,
             droppableIndexStart,
             droppableIndexEnd,
-            droppableId
-        }
-    }
+            droppableId,
+            type,
+        },
+    };
 };
