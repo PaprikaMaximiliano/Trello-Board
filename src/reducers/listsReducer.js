@@ -72,13 +72,11 @@ const listsReducer = (state = initialState, action) => {
             );
             list.cards.splice(cardIndex,1);
             newStateToDeleteCard.splice(listIndex,1, list);
-            cardID-=1;
             return newStateToDeleteCard;
         case CONSTANTS.DELETE_LIST:
             const newStateToDeleteList = [...state];
             const {listIndexToDelete}= action.payload;
             newStateToDeleteList.splice(listIndexToDelete,1);
-            listID-=1;
             return newStateToDeleteList;
         case CONSTANTS.DRAG_HAPPENED:
             const {
